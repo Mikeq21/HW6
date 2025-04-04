@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Michael Quiroga / 272 - 001
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -150,10 +150,16 @@ class PriorityQueue<E, P> {
      */
 
     public Node add(E e, P priority) {
+        Node newNode = new Node(e, priority, tree.size());
 
-        // YOUR CODE GOES HERE
-        return null;
-    }
+        // Add the newNode to the end of the tree
+        tree.add(newNode);
+
+        // Make sure the heap structure is preserved.
+        pullUp(tree.size() - 1);
+
+        return newNode;
+    } // ADD method, Michael Quiroga
 
 
     /**
@@ -167,10 +173,14 @@ class PriorityQueue<E, P> {
      */
 
     public boolean contains(E e) {
-
-        // ADD YOUR CODE HERE
+        for (Node node : tree) {
+            // Check if newly made node is e, and if its valid
+            if (node.value.equals(e) && node.isValid()) {
+                return true;
+            }
+        }
         return false;
-    }
+    } // Contains Method, Michael Quiroga
 
 
     /**

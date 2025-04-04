@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Michael Quiroga / 272-001
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -64,12 +64,29 @@ public class ProblemSolutions {
      */
 
   public static int lastBoulder(int[] boulders) {
+        // Max Heap to store weights of boulders in descending order
+      PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
 
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
-  }
+      // Add all boulders to the Priority Queue
+      for (int b : boulders) {
+          pq.offer(b);
+      }
+
+      // Keep smashing the two heaviest boulders until less than 2 are left
+      while (pq.size() >= 2) {
+          int first = pq.poll(); // Heaviest
+          int second = pq.poll(); // Second heaviest
+
+          if (first != second) {
+              // If they are not equal, insert the difference
+              pq.offer(first - second);
+          }
+          // If they are equal, both are destroyed (do nothing)
+      }
+
+      // Return the remaining boulder or 0
+      return pq.isEmpty() ? 0 : pq.peek();
+  } // LastBoulder Method, Michael Quiroga
 
 
     /**
@@ -90,13 +107,21 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
+        Set<String> seen = new HashSet<>();     // To track all strings seen
+        Set<String> duplicates = new HashSet<>(); // To track duplicates only
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        for (String word : input) {
+            // If add() returns false, it's already in the set (duplicate)
+            if (!seen.add(word)) {
+                duplicates.add(word);
+            }
+        }
 
-    }
+        // Convert to list and sort it
+        ArrayList<String> result = new ArrayList<>(duplicates);
+        Collections.sort(result);
+        return result;
+    } // Show Duplicates Method, Michael Quiroga
 
 
     /**
@@ -130,10 +155,24 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
+        Set<Integer> seen = new HashSet<>();       // To store seen numbers
+        Set<String> pairSet = new HashSet<>();     // To avoid duplicates
+        ArrayList<String> result = new ArrayList<>();
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
-    }
+        for (int num : input) {
+            int complement = k - num;
+            if (seen.contains(complement)) {
+                // Make sure the smaller number comes first
+                int a = Math.min(num, complement);
+                int b = Math.max(num, complement);
+                pairSet.add("(" + a + ", " + b + ")");
+            }
+            seen.add(num); // Add current number to the set
+        }
+
+        // Transfer to list and sort the strings lexicographically
+        result.addAll(pairSet);
+        Collections.sort(result);
+        return result;
+    } // Pair Method, Michael Quiroga
 }
